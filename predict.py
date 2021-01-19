@@ -1,5 +1,6 @@
 import flask
 import pandas as pd
+import numpy as np
 from tensorflow.keras.models import load_model
 
 # 实例化 flask
@@ -21,8 +22,8 @@ def predict():
     # 若发现参数，则返回预测值
     if (params != None):
         x=pd.DataFrame.from_dict(params, orient='index').transpose()
-        print(x)
-        data["prediction"] = str(model.predict(x)[0][0])
+        x = x[x.columns].astype(np.float)
+        data["prediction"] = str(model.predict(x))
         data["success"] = True
 
 

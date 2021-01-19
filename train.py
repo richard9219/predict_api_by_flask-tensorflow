@@ -8,14 +8,15 @@ from tensorflow.keras.layers import Dense #全链接层
 
 # 加载样本数据集，划分为x和y DataFrame
 df = pd.read_csv("https://github.com/bgweber/Twitch/raw/master/Recommendations/games-expand.csv")
-df1 = df.loc[0:20000]
-train_data = df1.drop(['label'], axis=1)
-train_targets = df1['label']
 
+df_data = df.drop(['label'], axis=1)
+df_labl = df['label']
 
-df2 = df.loc[20001:]
-test_data = df2.drop(['label'], axis=1)
-test_target = df2['label']
+train_data = df_data.loc[0:20000]
+train_targets = df_labl.loc[0:20000]
+
+test_data = df_data.loc[20001:]
+test_targets = df_labl.loc[20001:]
 
 
 # 训练次数
@@ -32,7 +33,7 @@ model.compile(optimizer='adam', loss='mse', metrics=['mae'])   #优化器选择�
 history = model.fit(train_data, train_targets,
                     batch_size=32,                      #批次大小为32
                     epochs=epochs,                     #循环次数为 之前定义的200
-                    validation_data=(test_data, test_target),  #验证集
+                    validation_data=(test_data, test_targets),  #验证集
                     shuffle=True)                      #打乱标签
 
 
