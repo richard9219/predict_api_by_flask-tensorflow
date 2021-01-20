@@ -1,3 +1,5 @@
+import json
+
 import flask
 import pandas as pd
 import numpy as np
@@ -15,14 +17,14 @@ model = load_model('model.h5')
 def predict():
     data = {"success": False}
 
-    params = flask.request.json
+    params = json.loads(flask.request.get_data())
     if (params == None):
         params = flask.request.args
 
     # 若发现参数，则返回预测值
     if (params != None):
         x=pd.DataFrame.from_dict(params, orient='index').transpose()
-        x = x[x.columns].astype(np.float)
+        # x = x[x.columns].astype(np.float)
         data["prediction"] = str(model.predict(x))
         data["success"] = True
 
